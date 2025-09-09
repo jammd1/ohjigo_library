@@ -20,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-q+4(=ffaci=9y@g(+m3!n6@k%#^17!oz6)o%q@uv@h=390tmf2"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False,  cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -51,9 +51,9 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -92,12 +92,18 @@ DATABASES = {
     }
 }
 
+
 REST_FRAMEWORK = {
+    # 개발 초기: 누구나 접근 가능
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny",],
-    "DEFAULT_SCHEMA_CLASS": ["drf_spectacular.openapi.AutoSchema",],
+    
+    # 로그인 기능 구현 후: 인증된 사용자만 접근 가능하도록 변경
+    # "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated",],
+    
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema", # drf_spectacular.openapi.AutoSchema 뒤의 쉼표(,) 제거
 }
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173",]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
