@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     "members",
     "library",
     "manager",
-    "books",
     
 ]
 AUTH_USER_MODEL = "members.Member"
