@@ -1,21 +1,24 @@
-# .gitignore
-
-# --- 환경 변수 파일 (절대 공유 금지!) ---
-.env
+# 1. 환경 변수 및 비밀 정보
 backend/.env
 frontend/.env
+.env
+settings_local.py
+db.sqlite3
+backend/dq.sqlite3
+backend/logs/
+# 2. Python/Django
+# 가상 환경 폴더 (예시: 프로젝트 루트에 있다고 가정)
+backend/backend_env/
+backend/__pycache__/
+*.pyc
+*.mo
 
-# --- 데이터베이스 ---
-backend/db.sqlite3
-
-# --- Python 가상환경 및 캐시 ---
-backend_env/
-**/__pycache__/
-
-# --- Node.js 라이브러리 및 빌드 결과물 ---
+# 3. Node.js/프론트엔드 (frontend 폴더 안에 있다고 가정)
 frontend/node_modules/
 frontend/dist/
+npm-debug.log
 
-# --- 기타 ---
-.vscode/
-.DS_Store
+# 4. IDE 및 OS 파일
+.vscode/    # VS Code 설정
+.idea/      # PyCharm 또는 IntelliJ 설정
+.DS_Store   # macOS 메타데이터 파일
