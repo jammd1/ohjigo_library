@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False,  cast=bool)
+DEBUG = config("DEBUG", default=True,  cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework_simplejwt",
 
     #3rd party apps
     "rest_framework",
@@ -45,10 +46,13 @@ INSTALLED_APPS = [
 
      #local apps
     "common",
-    "users",
+    "members",
+    "library",
+    "manager",
     "books",
+    
 ]
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "members.Member"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -96,6 +100,12 @@ DATABASES = {
 REST_FRAMEWORK = {
     # 개발 초기: 누구나 접근 가능
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny",],
+    
+    # JWT 인증 클래스
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication', 
+    ),
     
     # 로그인 기능 구현 후: 인증된 사용자만 접근 가능하도록 변경
     # "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated",],
