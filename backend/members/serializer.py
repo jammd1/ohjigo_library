@@ -25,12 +25,16 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return user
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    # By explicitly declaring the field with the same name as the USERNAME_FIELD,
+    # we override the default CharField with an IntegerField.
+    sid = serializers.IntegerField(required=True)
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
 
         # 사용자 지정 클레임 추가 (토큰 자체에 정보를 담음)
-        token['sid'] = user.sid
+        token['sid'] = int(user.sid)
         token['name'] = user.name
         
         return token

@@ -117,6 +117,10 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema", # drf_spectacular.openapi.AutoSchema 뒤의 쉼표(,) 제거
 }
 
+SIMPLE_JWT = {
+    "USER_ID_FIELD": "sid",
+}
+
 CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173",]
 
 # Password validation
