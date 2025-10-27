@@ -75,7 +75,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, '..' , 'frontend', 'dist')],
+        "DIRS": [os.path.join(BASE_DIR, '..', 'frontend', 'dist')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -121,8 +121,6 @@ SIMPLE_JWT = {
     "USER_ID_FIELD": "sid",
 }
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173",]
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -160,7 +158,7 @@ USE_TZ = True
 STATIC_URL = "/assets/"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '..' , 'frontend', 'dist', 'assets'),
+    os.path.join(BASE_DIR, '..', 'frontend', 'dist', 'assets'),
 ]
 
 # Default primary key field type

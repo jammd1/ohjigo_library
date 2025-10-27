@@ -1,20 +1,46 @@
 from rest_framework import serializers
-from .models import Book
-from .models import Loan
-from .models import Notice
-
+from .models import Book, Loan, Notice
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = '__all__' # 모든 필드 직렬화
+        fields = [
+            'book_id', 
+            'call_number', 
+            'title', 
+            'author', 
+            'status', 
+            'registrar_manager', 
+            'registration_date', 
+            'modification_manager', 
+            'modification_date'
+        ]
 
 class LoanSerializer(serializers.ModelSerializer):
+    # overdue_days는 모델의 프로퍼티이므로 읽기 전용 필드로 추가합니다.
+    overdue_days = serializers.ReadOnlyField()
+
     class Meta:
         model = Loan
-        fields = '__all__' # 모든 필드 직렬화
+        fields = [
+            'loan_id', 
+            'member', 
+            'book', 
+            'loan_date', 
+            'due_date', 
+            'return_date', 
+            'loan_manager',
+            'overdue_days'
+        ]
 
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
-        fields = '__all__' # 모든 필드 직렬화
+        fields = [
+            'notice_id', 
+            'manager', 
+            'title', 
+            'content', 
+            'post_date', 
+            'view_count'
+        ]
