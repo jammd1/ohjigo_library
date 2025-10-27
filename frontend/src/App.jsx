@@ -1,5 +1,6 @@
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
 import Info from './Info';
+import About from './About';
 import simbol from '../img/simbol.png';
 import mainBanner from '../img/main_banner.jpg';
 import './App.css';
@@ -75,7 +76,7 @@ function Layout() {
             <a href="#">공지</a>
             <a href="#">내 서재</a>
             <Link to="/info">도서관 안내</Link>
-            <a href="#">도서관 소개</a>
+            <Link to="/about">도서관 소개</Link>
           </nav>
         </div>
       </header>
@@ -110,6 +111,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="info" element={<Info />} />
+        <Route path="about" element={<About />} />
       </Route>
     </Routes>
   );
