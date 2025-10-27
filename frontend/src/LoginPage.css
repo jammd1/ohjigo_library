@@ -1,0 +1,43 @@
+/* LoginPage.css */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* 각 항목(학번, 비번, 버튼) 사이의 간격 */
+  max-width: 400px;
+  margin: 20px auto; /* 가운데 정렬 */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.login-submit-button {
+  padding: 12px;
+  background-color: rgb(0, 0, 0); /* 학교 메인 컬러 등 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-submit-button:hover {
+  background-color: #003366;
+}
