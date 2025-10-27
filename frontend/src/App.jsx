@@ -1,14 +1,51 @@
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
 import Info from './Info';
-import simbol from '../img/simbol.png'; // Import the image
+import simbol from '../img/simbol.png';
+import mainBanner from '../img/main_banner.jpg';
 import './App.css';
 
-// Create a simple Home component
+// Create a real Home component from original index.html content
 function HomePage() {
   return (
     <>
-      <h1>Vite + React</h1>
-      <p>This is the home page.</p>
+      <div className="hero-section">
+        <img src={mainBanner} alt="메인 배너 이미지" className="main-banner-image" />
+        <section className="search-section" aria-label="Search Section">
+          <form className="search-container" role="search">
+            <label htmlFor="search-input" className="visually-hidden">통합검색</label>
+            <input type="search" id="search-input" className="rectangle-3" placeholder="홈페이지 제작 중" />
+            <button className="rectangle-4" type="submit" aria-label="검색">
+              <span className="visually-hidden">검색</span>
+            </button>
+          </form>
+        </section>
+      </div>
+      <main className="main-content">
+        <section className="content-sections">
+          <article className="schedule-section" aria-labelledby="schedule-heading">
+            <h2 id="schedule-heading">도서관 일정</h2>
+            <div className="line"></div>
+            <ul id="schedule-list" className="info-list">
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+            </ul>
+          </article>
+          <article className="notice-section" aria-labelledby="notice-heading">
+            <h2 id="notice-heading">공지</h2>
+            <div className="img"></div>
+            <ul id="notice-list" className="info-list">
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+              <li><a href="#">- 도서관 홈페이지 제작 중입니다</a></li>
+            </ul>
+          </article>
+        </section>
+      </main>
     </>
   );
 }

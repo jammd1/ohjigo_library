@@ -24,7 +24,6 @@ from rest_framework_simplejwt.views import (
 from members.views import CustomTokenObtainPairView
 
 urlpatterns = [
-    path("", include("home.urls")),
     path("admin/", admin.site.urls),
     path("library/", include("library.urls")),
     path("manager/", include("manager.urls")),

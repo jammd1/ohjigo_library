@@ -54,7 +54,7 @@ class Book(models.Model):
     def __str__(self):
         return f"{self.title} ({self.call_number})"
 
-    def update_modi_date(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
         # 객체가 데이터베이스에 이미 존재하는 경우(업데이트)에만 최종 수정 시각을 업데이트합니다.
         if self.pk:
             self.modification_date = timezone.now()

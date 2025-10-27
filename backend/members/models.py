@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.db import transaction, IntegrityError
 import logging
+from django.utils import timezone
+
 # Member 생성 관리자 클래스
 logger = logging.getLogger(__name__)
 
@@ -20,7 +22,6 @@ class MemberManager(BaseUserManager):
         if 'member_last_activity' not in extra_fields:
             # auto_now_add 필드는 객체 생성 시점에 바로 접근이 어려우므로
             # timezone.now()로 명시적 값 생성
-            from django.utils import timezone
             extra_fields['member_last_activity'] = timezone.now()
         try:
             # --- 트랜젝션 ---
@@ -76,7 +77,7 @@ class Member(AbstractUser, PermissionsMixin):
     status = models.CharField(
         "계정 상태", max_length = 20, choices=Status.choices, default=Status.ACTIVE
         )  # 계정 상태
-    member_last_activity = models.DateTimeField("최종 활동 시각", auto_now_add=True) # 최종 활동 시각
+    member_last_activity = models.DateTimeField("최종 활동 시각", auto_now=True) # 최종 활동 시각
     join_date = models.DateTimeField("최초 회원가입 시각", auto_now_add = True)
 
     is_staff = models.BooleanField(default=False)
@@ -86,7 +87,7 @@ class Member(AbstractUser, PermissionsMixin):
 
     class Meta:
         db_table = "MEMBER" # 테이블
-        verbose_name = "회원" # 꽌리자 페이지에서 사용할 단수 이름
+        verbose_name = "회원" # 관리자 페이지에서 사용할 단수 이름
         verbose_name_plural = "회원 목록" # 관리자 페이지에서 사용할 복수 이름
         ordering = ['sid'] # 기본 정렬 기준(학번 오름차순)
     
