@@ -1,22 +1,21 @@
-from django.urls import path
-from .views import MemberViewSet, RegistrationView
+# members/urls.py
 
-# The router is no longer used for MemberViewSet
-# We define the URLs manually to enforce integer type for sid
+from django.urls import path
+from .views import MemberViewSet # RegistrationView는 이제 사용 안 함
 
 urlpatterns = [
-    # Map viewset actions to URLs manually
-    path('members/', MemberViewSet.as_view({
+    # 4. (핵심) 'members/' -> '' (빈 문자열)로 변경
+    # /api/members/ (GET, POST) 요청을 처리
+    path('', MemberViewSet.as_view({
         'get': 'list',
         'post': 'create'
     }), name='member-list'),
-    path('members/<int:sid>/', MemberViewSet.as_view({
+    
+    # /api/members/<int:sid>/ 요청을 처리
+    path('<int:sid>/', MemberViewSet.as_view({
         'get': 'retrieve',
         'put': 'update',
         'patch': 'partial_update',
         'delete': 'destroy'
     }), name='member-detail'),
-
-    # The registration view remains the same
-    path('register/', RegistrationView.as_view(), name='register'),
 ]
