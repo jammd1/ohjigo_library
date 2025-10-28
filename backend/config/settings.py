@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "members",
     "library",
     "manager",
-    "home",
 ]
 
 AUTH_USER_MODEL = "members.Member"
