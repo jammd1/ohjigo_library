@@ -2,13 +2,16 @@
 
 from django.contrib import admin
 from django.urls import path, include
-# ... (다른 import) ...
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from members.views import CustomTokenObtainPairView
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("library/", include("library.urls")),
+    path("manager/", include("manager.urls")),
+    path("api/books/", include("library.urls")),
     # ... (다른 앱들) ...
 
     # 3. (핵심) 'members/'가 아니라 'api/members/' 입니다.
