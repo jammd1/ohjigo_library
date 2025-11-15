@@ -1,4 +1,4 @@
-// 도서관 안내 페이지 완료
+// 도서관 안내 페이지 - 틀 완료, 내용 수정 필요
 
 import React from 'react';
 import locationGif from '../img/location.gif';
@@ -26,8 +26,9 @@ function Info() {
         <p>전임교수, 비전임교수: 15권 (3개월)</p>
         <p>대학원생: 10권 (1개월)</p>
         <p>학부생, 졸업생: 5권 (2주)</p>
+        <br />
         <p><strong>기증 안내</strong></p>
-        <p>어쩌구 저쩌구</p>
+        <p></p>
       </div>
     </main>
   );

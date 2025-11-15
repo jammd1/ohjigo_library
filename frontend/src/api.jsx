@@ -1,3 +1,5 @@
+// 회원가입, 로그인, 로그아웃 API
+
 import axios from 'axios';
 
 // 1. (핵심) baseURL이 '.../api'로 끝나야 합니다.
