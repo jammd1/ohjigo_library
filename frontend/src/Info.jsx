@@ -1,4 +1,4 @@
-// 도서관 안내 페이지 - 틀 완료, 내용 수정 필요
+// 도서관 안내 페이지 - 틀 완료, 내용 완료
 
 import React from 'react';
 import locationGif from '../img/location.gif';
@@ -28,7 +28,9 @@ function Info() {
         <p>학부생, 졸업생: 5권 (2주)</p>
         <br />
         <p><strong>기증 안내</strong></p>
-        <p></p>
+        <p>도서 기증 문의: 독일어과 학과장실 이메일 (deutsch@hufs.ac.kr)에 하단 내용을 기입하여 문의 부탁드립니다.</p>
+        <p>1. 성함, 신분, 연락처</p>
+        <p>2. 도서 권종, 도서 규모</p>
       </div>
     </main>
   );
