@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from members.models import Member
 from manager.models import Manager
 from django.utils import timezone
@@ -16,6 +17,13 @@ class Book(models.Model):
         ON_LOAN = 'ON_LOAN', '대출 중'
         LOST = 'LOST', '분실'
 
+    class Category(models.TextChoices):
+        LITERATUR = 'Literatur', '문학'
+        SPRACHWISSENSCHAFT = 'Sprachwissenschaft', '어학'
+        GESCHICHTE = 'Geschichte', '역사'
+        SOZIALWISSENSCHAFTEN = 'Sozialwissenschaften', '사회과학'
+        SONSTIGES = 'Sonstiges', '기타'
+
     # book_id를 PK로, call_number를 Unique 필드로 사용하는 것이 가장 안정적입니다.
     book_id = models.AutoField("도서 고유 ID (바코드)", primary_key=True)
     call_number = models.CharField("고유 청구기호", max_length=50, unique=True)
@@ -23,6 +31,28 @@ class Book(models.Model):
     author = models.CharField("저자", max_length=255, null=True, blank=True)
     status = models.CharField(
         "현재 상태", max_length=20, choices=Status.choices, default=Status.AVAILABLE)
+    
+    # 도서 위치: 'A~D-(숫자)' 형식 (예: A-4, B-12, C-3, D-25)
+    location_validator = RegexValidator(
+        regex=r'^[A-D]-\d+$',
+        message="도서 위치는 'A~D-(숫자)' 형식이어야 합니다. (예: A-4)"
+    )
+    location = models.CharField(
+        "도서 위치", 
+        max_length=10, 
+        validators=[location_validator],
+        null=True,
+        blank=True,
+        help_text="도서 위치 형식: A~D-(숫자) (예: A-4)"
+    )
+    
+    # 분야: 5가지 선택지
+    category = models.CharField(
+        "분야", 
+        max_length=20, 
+        choices=Category.choices,
+        default=Category.SONSTIGES
+    )
 
     # ForeignKey 필드: 관리자가 삭제되어도 도서 기록은 남아야 하므로 on_delete=models.SET_NULL 사용
     registrar_manager = models.ForeignKey(
