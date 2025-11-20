@@ -1,6 +1,7 @@
 # 1. 환경 변수 및 비밀 정보 (Secrets)
 ####################################
 .env                        # 모든 .env 파일 (루트 포함)
+backend/.env
 *.local                     # .env.local 등 로컬 전용 설정 파일
 settings_local.py           # Django 로컬 설정 파일
 

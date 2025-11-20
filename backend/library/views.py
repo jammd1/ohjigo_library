@@ -18,6 +18,19 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
+    def get_queryset(self):
+        """
+        기본 도서 목록에 카테고리별 필터 기능을 추가합니다.
+        예: /api/books/books/?category=Literatur
+        """
+        queryset = super().get_queryset()
+        category = self.request.query_params.get("category")
+
+        if category:
+            queryset = queryset.filter(category=category)
+
+        return queryset
+
 # 2. LoanViewSet: 대출/반납과 관련된 모든 로직을 관리합니다.
 class LoanViewSet(viewsets.ModelViewSet):
     """
