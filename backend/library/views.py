@@ -113,8 +113,8 @@ class NoticeViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         # F() 표현식을 사용하여 race condition 없이 안전하게 조회수를 1 증가시킵니다.
-        instance.view_count = models.F('view_count') + 1
-        instance.save(update_fields=['view_count']) # view_count 필드만 업데이트
+        # update() 메서드를 사용하여 DB 레벨에서 직접 증가시킵니다.
+        Notice.objects.filter(pk=instance.pk).update(view_count=models.F('view_count') + 1)
         instance.refresh_from_db() # DB에서 업데이트된 값을 다시 불러옵니다.
         
         serializer = self.get_serializer(instance)

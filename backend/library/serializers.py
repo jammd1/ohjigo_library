@@ -10,6 +10,8 @@ class BookSerializer(serializers.ModelSerializer):
             'title', 
             'author', 
             'status', 
+            'location',
+            'category',
             'registrar_manager', 
             'registration_date', 
             'modification_manager', 
@@ -17,7 +19,7 @@ class BookSerializer(serializers.ModelSerializer):
         ]
 
 class LoanSerializer(serializers.ModelSerializer):
-    # overdue_days는 모델의 프로퍼티이므로 읽기 전용 필드로 추가합니다.
+    # overdue_days는 모델의 프로퍼티이므로 읽기 전용 필드로 추가.
     overdue_days = serializers.ReadOnlyField()
 
     class Meta:
