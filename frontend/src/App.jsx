@@ -1,4 +1,8 @@
-// 메인 홈페이지
+//======================================================================
+//======================================================================
+// 메인 화면
+//======================================================================
+//======================================================================
 
 import { Routes, Route, Link, Outlet, useNavigate } from 'react-router-dom';
 import Info from './Info';
@@ -6,6 +10,8 @@ import About from './About';
 import Login from './Login'; 
 import Register from './Register'; 
 import simbol from '../img/simbol.png';
+import Search from './Search';
+import MyPage from './Mypage';
 import mainBanner from '../img/main_banner.jpg';
 import './App.css';
 import { useAuth } from './AuthContext'; 
@@ -19,6 +25,8 @@ function HomePage() {
   const [notices, setNotices] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [keyword, setKeyword] = useState(''); // 검색어 저장
+  const navigate = useNavigate(); // 페이지 이동 도구
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -27,7 +35,7 @@ function HomePage() {
         setNotices(null);
         setLoading(true);
         
-        const response = await axios.get('/api/books/notices/');
+        const response = await axios.get('/api/notices/');
         
         setNotices(response.data);
       } catch (e) {
@@ -35,9 +43,17 @@ function HomePage() {
       }
       setLoading(false);
     };
-
     fetchNotices();
   }, []); // [] : 처음 렌더링될 때 한 번만 실행
+
+  const handleMainSearch = (e) => {
+    e.preventDefault(); // 새로고침 방지
+    if (keyword.trim()) {
+      // 검색어가 있으면 /search 페이지로 이동하면서 검색어를 주소 뒤에 붙여줌
+      // 예: /search?search=괴테
+      navigate(`/search?search=${keyword}`);
+    }
+  };
 
   
   const renderNoticeList = () => {
@@ -97,10 +113,22 @@ function HomePage() {
     <>
       <div className="hero-section">
         <img src={mainBanner} alt="메인 배너 이미지" className="main-banner-image" />
+        
         <section className="search-section" aria-label="Search Section">
-          <form className="search-container" role="search">
+          {/* ★ 4. form 태그에 onSubmit 연결 */}
+          <form className="search-container" role="search" onSubmit={handleMainSearch}>
             <label htmlFor="search-input" className="visually-hidden">자료 검색</label>
-            <input type="search" id="search-input" className="rectangle-3" placeholder="자료 검색" />
+            
+            {/* ★ 5. input 태그에 value와 onChange 연결 */}
+            <input 
+              type="search" 
+              id="search-input" 
+              className="rectangle-3" 
+              placeholder="자료 검색" 
+              value={keyword} // 입력된 값 표시
+              onChange={(e) => setKeyword(e.target.value)} // 입력할 때마다 keyword 변수에 저장
+            />
+            
             <button className="rectangle-4" type="submit" aria-label="검색">
               <span className="visually-hidden">검색</span>
             </button>
@@ -162,9 +190,9 @@ function Layout() {
             </p>
           </Link>
           <nav className="main-nav" aria-label="Main Navigation">
-            <a href="#">자료 검색</a>
+            <Link to="/search">자료 검색</Link>
             <Link to="/board">공지 사항</Link>
-            <a href="#">내 서재</a>
+            <Link to="/mypage">내 서재</Link>
             <Link to="/info">도서관 안내</Link>
             <Link to="/about">도서관 소개</Link>
           </nav>
@@ -199,19 +227,21 @@ function Layout() {
 
 // 경로별 링크
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="search" element={<Search />} />
+        <Route path="mypage" element={<MyPage />} />
         <Route path="board" element={<BoardPage />} />
         <Route path="notice/:noticeId" element={<NoticeDetailPage />} />
-        <Route path="info" element={<Info />} />
-        <Route path="about" element={<About />} />
-        <Route path="login" element={<Login />} /> 
-        <Route path="register" element={<Register />} />
-      </Route>
-    </Routes>
-  );
+        <Route path="info" element={<Info />} />
+        <Route path="about" element={<About />} />
+        <Route path="login" element={<Login />} /> 
+        <Route path="register" element={<Register />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;

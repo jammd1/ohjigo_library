@@ -1,7 +1,7 @@
 // src/AuthContext.js
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from './api'; // 👈 api.js에서 axios 인스턴스를 가져온다고 가정
+import api from './api'; 
 
 // 1. Context 생성
 const AuthContext = createContext();

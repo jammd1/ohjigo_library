@@ -344,3 +344,93 @@ a.site-title {
     object-fit: cover; /* 이미지가 비율을 유지하면서 잘리지 않고 꽉 차도록 설정 */
 }
 
+/* ========================================= */
+/* Search & MyPage 추가 스타일 */
+/* ========================================= */
+
+/* 검색창 스타일 */
+.search-wrapper {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.library-search-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.search-input-lg {
+  width: 60%;
+  padding: 15px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+}
+
+.search-btn-lg {
+  padding: 0 30px;
+  font-size: 16px;
+  background-color: #003366; /* 로고 색상과 유사한 짙은 남색 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-btn-lg:hover {
+  background-color: #002244;
+}
+
+/* 테이블 스타일 */
+.table-container {
+  overflow-x: auto; /* 모바일 대응 */
+}
+
+.library-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.library-table th, 
+.library-table td {
+  border-bottom: 1px solid #eee;
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.library-table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+  color: #333;
+  border-top: 2px solid #333;
+}
+
+.library-table td.text-left {
+  text-align: left; /* 제목은 왼쪽 정렬 */
+}
+
+.no-result {
+  padding: 40px 0;
+  color: #888;
+}
+
+/* 상태 뱃지 (대출가능/불가) */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-badge.available {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+
+.status-badge.borrowed {
+  background-color: #fbe9e7;
+  color: #c62828;
+}

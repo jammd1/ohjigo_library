@@ -1,7 +1,9 @@
-// 1. { useState }를 포함한 이 라인 하나만 남기세요.
+//======================================================================
+//======================================================================
+// 로그인 (완료)
+//======================================================================
+//======================================================================
 import React, { useState } from 'react'; 
-
-// 2. 다른 'import React from 'react';' 라인은 삭제하세요.
 import { useAuth } from './AuthContext';
 import { loginUser } from './api'; 
 import { useNavigate, Link } from 'react-router-dom'; 
@@ -59,7 +61,7 @@ function Login() {
               onChange={(e) => setSid(e.target.value)} required autoFocus
             />
           </div>
-          {/* 비밀번호 */}
+          {/* 비밀번호(전화번호) */}
           <div className="form-group">
             <label htmlFor="password-input">비밀번호</label>
             <input 

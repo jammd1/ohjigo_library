@@ -11,7 +11,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("library/", include("library.urls")),
     path("manager/", include("manager.urls")),
-    path("api/books/", include("library.urls")),
+    path("api/", include("library.urls")),
     # ... (다른 앱들) ...
 
     # 3. (핵심) 'members/'가 아니라 'api/members/' 입니다.

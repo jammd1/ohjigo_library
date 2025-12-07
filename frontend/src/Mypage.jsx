@@ -1,0 +1,143 @@
+import React, { useEffect, useState } from 'react';
+import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './App.css';
+
+function MyPage() {
+  const { user, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const [loans, setLoans] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // ★ [추가] 영어로 된 신분 코드를 한글로 보여주기 위한 맵핑 객체
+  const ROLE_MAP = {
+    'UNDERGRADUATE': '학부생/졸업생',
+    'GRADUATE': '대학원생',
+    'PROFESSOR': '교수',
+    'ADMIN': '관리자'
+  };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요한 서비스입니다.");
+      navigate('/login');
+      return;
+    }
+
+    const fetchMyLoans = async () => {
+      try {
+        setLoading(true);
+        // ★ [수정] 대출 목록 가져오기 API 호출
+        // 기존 코드에 있던 query 변수 에러를 해결하고, 대출 관련 주소로 변경했습니다.
+        // (주의: 백엔드 urls.py에 'api/loans/' 경로가 설정되어 있어야 작동합니다)
+        const response = await axios.get('/api/loans/'); 
+        setLoans(response.data);
+      } catch (error) {
+        console.error("대출 목록 로딩 실패:", error);
+      }
+      setLoading(false);
+    };
+
+    fetchMyLoans();
+  }, [isLoggedIn, navigate]);
+
+  // 날짜 포맷팅 함수 (YYYY-MM-DD)
+  const formatDate = (dateString) => {
+    if (!dateString) return '-';
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  // 연체 여부 계산 함수
+  const checkOverdue = (loan) => {
+    if (loan.return_date) return false; 
+    if (loan.overdue_days > 0) return true;
+    const today = new Date();
+    const due = new Date(loan.due_date);
+    return today > due;
+  };
+
+  if (!isLoggedIn) return null;
+
+  return (
+    <main className="main-content info-page">
+      <br /><br />
+      <h1>내 서재</h1>
+
+      {/* 회원 정보 섹션 */}
+      <div className="info-section">
+        <h2>회원 정보</h2>
+        <p><strong>이름:</strong> {user?.name}</p>
+        
+        {/* ★ [수정 1] 학번 필드명 변경 (id -> sid) */}
+        <p><strong>학번(ID):</strong> {user?.sid}</p> 
+      </div>
+
+      {/* 대출 현황 섹션 */}
+      <div className="info-section">
+        <h2>대출 현황</h2>
+        {loading ? (
+           <p>정보를 불러오는 중...</p>
+        ) : (
+          <div className="table-container">
+            <table className="library-table">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>도서명</th>
+                  <th>대출일</th>
+                  <th>반납예정일</th>
+                  <th>상태</th>
+                  <th>반납여부</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loans && loans.length > 0 ? (
+                  loans.map((loan, index) => {
+                    // loan 객체 구조에 따라 제목 가져오는 방식 (안전하게 처리)
+                    const bookTitle = loan.book_title || loan.book?.title || "도서 정보 없음";
+                    const isOverdue = checkOverdue(loan);
+
+                    return (
+                      <tr key={loan.loan_id || index}>
+                        <td>{index + 1}</td>
+                        <td className="text-left" style={{fontWeight: 'bold'}}>
+                            {bookTitle}
+                        </td>
+                        <td>{formatDate(loan.loan_date)}</td>
+                        <td>{formatDate(loan.due_date)}</td>
+                        
+                        {/* 연체 상태 표시 */}
+                        <td style={{ 
+                          color: isOverdue ? 'red' : 'green', 
+                          fontWeight: 'bold' 
+                        }}>
+                          {isOverdue ? '연체중' : '정상'}
+                        </td>
+
+                         {/* 반납 여부 */}
+                        <td>
+                          {loan.return_date ? (
+                            <span style={{color: '#999'}}>반납완료</span>
+                          ) : (
+                            <span style={{color: '#003366'}}>대출중</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="no-result">대출 기록이 없습니다.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}
+
+export default MyPage;

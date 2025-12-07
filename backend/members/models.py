@@ -68,15 +68,17 @@ class Member(AbstractUser, PermissionsMixin):
         DORMANT = "DORMANT", "휴면"
         WITHDRAWN = "WITHDRAWN", "탈퇴"
         SUSPENDED = "SUSPENDED", "정지"
+
+    class Role(models.TextChoices):
+        PROFESSOR = "PROFESSOR", "교수"
+        GRADUATE = "GRADUATE", "대학원생"
+        UNDERGRADUATE = "UNDERGRADUATE", "학부생/졸업생"
     
-    sid = models.IntegerField(
-        "학번", primary_key=True, unique=True
-        )  # 학번 (PK)
+    sid = models.IntegerField("학번", primary_key=True, unique=True)  # 학번 (PK)
     name = models.CharField("실명 또는 닉네임", max_length=100) # 이름
     email = models.EmailField("이메일", max_length=100, unique=True) # 이메일
-    status = models.CharField(
-        "계정 상태", max_length = 20, choices=Status.choices, default=Status.ACTIVE
-        )  # 계정 상태
+    status = models.CharField("계정 상태", max_length = 20, choices=Status.choices, default=Status.ACTIVE) # 계정 상태
+    role = models.CharField("신분", max_length=20, choices=Role.choices, default=Role.UNDERGRADUATE)
     member_last_activity = models.DateTimeField("최종 활동 시각", auto_now=True) # 최종 활동 시각
     join_date = models.DateTimeField("최초 회원가입 시각", auto_now_add = True)
 
@@ -97,4 +99,4 @@ class Member(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = ["name", "email"]  # superuser 생성 시 필요한 필드
 
     def __str__(self):
-        return f"회원 학번: {self.sid} {self.name}"
+        return f"[{self.get_role_display()}] {self.name} ({self.sid})"

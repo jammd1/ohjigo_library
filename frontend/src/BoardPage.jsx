@@ -1,17 +1,17 @@
+//======================================================================
+//======================================================================
+// 공지사항 (완료)
+//======================================================================
+//======================================================================
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // [수정 1] axios 임포트 주석 해제
+import axios from 'axios'; 
 import { Link } from 'react-router-dom';
-// import './App.css';
-
-// [수정 2] 임시 데이터(DUMMY_NOTICES)는 이제 필요 없으므로 삭제합니다.
 
 function BoardPage() {
-  // [수정 3] notices를 빈 배열(null)로, loading과 error 상태를 추가합니다.
   const [notices, setNotices] = useState(null); // 초기값을 null로 변경
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // [수정 4] useEffect 주석을 해제하고 API 호출 로직을 완성합니다.
   useEffect(() => {
     // API 호출 함수
     const fetchNotices = async () => {
@@ -22,7 +22,7 @@ function BoardPage() {
         setLoading(true);
 
         // 2. API 호출
-        const response = await axios.get('/api/books/notices/');
+        const response = await axios.get('/api/notices/');
         
         // 3. 요청 성공: 데이터 저장 및 로딩 종료
         setNotices(response.data); 

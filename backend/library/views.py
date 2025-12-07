@@ -1,8 +1,10 @@
 from django.db import transaction, models
 from django.utils import timezone
 from datetime import timedelta
+from django.db.models import Q
 
 from rest_framework import viewsets, status
+from rest_framework import filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -20,14 +22,46 @@ class BookViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        기본 도서 목록에 카테고리별 필터 기능을 추가합니다.
-        예: /api/books/books/?category=Literatur
+        검색어에 독일어 움라우트 변환 기능을 추가한 커스텀 쿼리셋
         """
         queryset = super().get_queryset()
-        category = self.request.query_params.get("category")
+        
+        # 1. 프론트엔드에서 보낸 검색어('search') 가져오기
+        search_keyword = self.request.query_params.get("search", "")
 
-        if category:
-            queryset = queryset.filter(category=category)
+        if search_keyword:
+            # 2. 독일어 변환 로직 (ae -> ä, oe -> ö, ue -> ü, ss -> ß)
+            german_keyword = search_keyword.replace('ae', 'ä')\
+                                           .replace('oe', 'ö')\
+                                           .replace('ue', 'ü')\
+                                           .replace('ss', 'ß')
+            
+            # 3. 원래 검색어(ae) OR 독일어 변환 검색어(ä) 둘 중 하나라도 포함되면 찾기
+            # title(제목) 또는 author(저자)에서 찾습니다.
+            queryset = queryset.filter(
+                Q(title__icontains=search_keyword) | 
+                Q(title__icontains=german_keyword) |
+                Q(author__icontains=search_keyword) |
+                Q(author__icontains=german_keyword) |
+                Q(language__icontains=search_keyword) |      # 언어
+                Q(call_number__icontains=search_keyword) |   # 청구기호
+                Q(category__icontains=search_keyword) |      # 분야
+                Q(location__icontains=search_keyword)        # 위치
+            )
+
+        language_filter = self.request.query_params.get("language")
+        if language_filter:
+            queryset = queryset.filter(language=language_filter)
+
+        # 2) 분야(카테고리) 필터
+        category_filter = self.request.query_params.get("category")
+        if category_filter:
+            queryset = queryset.filter(category=category_filter)
+
+        # 3) 상태(대출가능 여부) 필터
+        status_filter = self.request.query_params.get("status")
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
 
         return queryset
 

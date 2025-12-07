@@ -1,3 +1,8 @@
+//======================================================================
+//======================================================================
+// 공지사항 상세 (완료)
+//======================================================================
+//======================================================================
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
@@ -21,7 +26,7 @@ function NoticeDetailPage() {
 
         // 4. (중요!) '목록'이 아닌 '상세' API를 호출합니다.
         // Django REST Framework는 보통 /api/books/notices/<id>/ 형태를 사용합니다.
-        const response = await axios.get(`/api/books/notices/${noticeId}/`);
+        const response = await axios.get(`/api/notices/${noticeId}/`);
         
         setNotice(response.data);
       } catch (e) {
