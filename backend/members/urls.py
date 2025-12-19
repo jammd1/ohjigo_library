@@ -13,14 +13,16 @@ def create_admin(request):
     return HttpResponse("이미 계정이 있습니다.")
 
 urlpatterns = [
-    # 4. (핵심) 'members/' -> '' (빈 문자열)로 변경
-    # /api/members/ (GET, POST) 요청을 처리
+    # ★ 핵심: 로그인 경로 추가 (이게 있어야 우리가 만든 시리얼라이저를 탑니다)
+    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+
+    # /api/members/ 요청 처리
     path('', MemberViewSet.as_view({
         'get': 'list',
         'post': 'create'
     }), name='member-list'),
     
-    # /api/members/<int:sid>/ 요청을 처리
+    # /api/members/<int:sid>/ 요청 처리
     path('<int:sid>/', MemberViewSet.as_view({
         'get': 'retrieve',
         'put': 'update',
