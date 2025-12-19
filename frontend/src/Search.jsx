@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom'; // ★ URL 파라미터 사용을 위해 추가
-import axios from 'axios';
+import http from './api/http';
 import './App.css';
 
 function Search() {
@@ -53,8 +53,7 @@ function Search() {
         Object.entries(params).filter(([_, v]) => v !== '')
       );
 
-      // ★ [수정] 주소를 /api/books/ 로 변경하고 params 전달
-      const response = await axios.get('/api/books/', { params: cleanParams });
+      const response = await http.get('/api/books/', { params: cleanParams });
       
       console.log("검색 성공:", response.data);
       setBooks(response.data);

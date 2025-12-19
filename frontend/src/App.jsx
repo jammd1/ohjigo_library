@@ -16,7 +16,7 @@ import mainBanner from '../img/main_banner.jpg';
 import './App.css';
 import { useAuth } from './AuthContext'; 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import http from './api/http'; // 1. axios 대신 우리가 만든 http 임포트
 import BoardPage from './BoardPage';
 import NoticeDetailPage from './NoticeDetailPage';
 
@@ -35,7 +35,7 @@ function HomePage() {
         setNotices(null);
         setLoading(true);
         
-        const response = await axios.get('/api/notices/');
+        const response = await http.get('/api/notices/');
         
         setNotices(response.data);
       } catch (e) {

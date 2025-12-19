@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import http from './api/http';
 import './App.css';
 
 function MyPage() {
@@ -9,8 +9,6 @@ function MyPage() {
   const navigate = useNavigate();
   const [loans, setLoans] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // ★ [추가] 영어로 된 신분 코드를 한글로 보여주기 위한 맵핑 객체
   const ROLE_MAP = {
     'UNDERGRADUATE': '학부생/졸업생',
     'GRADUATE': '대학원생',
@@ -28,10 +26,7 @@ function MyPage() {
     const fetchMyLoans = async () => {
       try {
         setLoading(true);
-        // ★ [수정] 대출 목록 가져오기 API 호출
-        // 기존 코드에 있던 query 변수 에러를 해결하고, 대출 관련 주소로 변경했습니다.
-        // (주의: 백엔드 urls.py에 'api/loans/' 경로가 설정되어 있어야 작동합니다)
-        const response = await axios.get('/api/loans/'); 
+        const response = await http.get('/api/loans/');
         setLoans(response.data);
       } catch (error) {
         console.error("대출 목록 로딩 실패:", error);

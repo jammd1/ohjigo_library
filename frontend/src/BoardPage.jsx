@@ -4,7 +4,7 @@
 //======================================================================
 //======================================================================
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; 
+import http from './api/http';
 import { Link } from 'react-router-dom';
 
 function BoardPage() {
@@ -22,7 +22,7 @@ function BoardPage() {
         setLoading(true);
 
         // 2. API 호출
-        const response = await axios.get('/api/notices/');
+        const response = await http.get('/api/notices/');
         
         // 3. 요청 성공: 데이터 저장 및 로딩 종료
         setNotices(response.data); 
