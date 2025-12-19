@@ -11,7 +11,7 @@ export const loginUser = async (sid, password) => {
     // String(sid)를 통해 서버가 기대하는 문자열 포맷으로 전달
     const response = await api.post('/api/token/', {
       username: String(sid), 
-      password: password,
+      password: String(password),
     });
     
     const { access, refresh, name, sid: userSid, role } = response.data;
