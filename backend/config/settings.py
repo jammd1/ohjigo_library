@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+from django.core.exceptions import ImproperlyConfigured
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,10 +26,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=True,  cast=bool)
+DEBUG = config("DEBUG", default=False,  cast=bool)
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-
+if not DEBUG:
+    # 프로덕션 환경에서는 환경 변수를 통해 호스트를 설정합니다.
+    host_string = config('ALLOWED_HOSTS') 
+    if not host_string:
+         # DEBUG=False인데 호스트가 없으면 보안상 위험하므로 에러 발생
+         raise ImproperlyConfigured("ALLOWED_HOSTS environment variable must be set in production.")
+    
+    # 쉼표(,)로 구분된 호스트 목록을 처리합니다.
+    ALLOWED_HOSTS = [h.strip() for h in host_string.split(',') if h.strip()]
+else:
+    # 개발 환경에서는 로컬 호스트만 허용
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 # Application definition
 
@@ -92,12 +104,21 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if os.environ.get("DATABASE_URL"):
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600, 
+            ssl_require=True, # AWS RDS는 보안을 위해 SSL 연결을 요구합니다.
+        )
     }
-}
+else:
+    # 로컬 개발 환경용 설정
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 REST_FRAMEWORK = {
@@ -159,6 +180,7 @@ STATIC_URL = "/assets/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '..', 'frontend', 'dist', 'assets'),
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
