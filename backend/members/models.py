@@ -72,7 +72,7 @@ class Member(AbstractUser, PermissionsMixin):
     role = models.CharField("신분", max_length=20, choices=Role.choices, default=Role.UNDERGRADUATE)
     member_last_activity = models.DateTimeField("최종 활동 시각", auto_now=True)
     join_date = models.DateTimeField("최초 회원가입 시각", auto_now_add=True)
-    USERNAME_FIELD = sid
+    USERNAME_FIELD = "sid"
     REQUIRED_FIELDS = ["name", "email"]
 
     is_staff = models.BooleanField(default=False)
