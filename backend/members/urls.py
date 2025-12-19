@@ -1,7 +1,7 @@
 # members/urls.py
 
 from django.urls import path
-from .views import MemberViewSet # RegistrationView는 이제 사용 안 함
+from .views import MemberViewSet, CustomTokenObtainPairView
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 
