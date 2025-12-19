@@ -53,7 +53,7 @@ function Search() {
         Object.entries(params).filter(([_, v]) => v !== '')
       );
 
-      const response = await http.get('/api/books/', { params: cleanParams });
+      const response = await http.get('books/', { params: cleanParams });
       
       console.log("검색 성공:", response.data);
       setBooks(response.data);

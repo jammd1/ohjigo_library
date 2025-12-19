@@ -19,7 +19,7 @@ export const registerUser = async (userData) => {
 export const loginUser = async (sid, password) => {
   try {
     // baseURL + '/token/' 로 요청
-    const response = await api.post('/token/', {
+    const response = await api.post('token/', {
       sid: sid, 
       password: password,
     });

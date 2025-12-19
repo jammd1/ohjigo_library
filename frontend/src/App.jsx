@@ -35,7 +35,7 @@ function HomePage() {
         setNotices(null);
         setLoading(true);
         
-        const response = await http.get('/api/notices/');
+        const response = await http.get('notices/');
         
         setNotices(response.data);
       } catch (e) {

@@ -22,7 +22,7 @@ function BoardPage() {
         setLoading(true);
 
         // 2. API 호출
-        const response = await http.get('/api/notices/');
+        const response = await http.get('notices/');
         
         // 3. 요청 성공: 데이터 저장 및 로딩 종료
         setNotices(response.data); 
