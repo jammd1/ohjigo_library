@@ -2,6 +2,31 @@ from rest_framework import serializers
 from .models import Member
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+# 이 클래스가 UserCreateSerializer 위에나 아래에 꼭 있어야 합니다!
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ['sid', 'name', 'email', 'status', 'join_date', 'role']
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    sid = serializers.IntegerField(required=True)
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['sid'] = int(user.sid)
+        token['name'] = user.name
+        token['role'] = user.role 
+        return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data['sid'] = self.user.sid
+        data['name'] = self.user.name
+        data['email'] = self.user.email
+        data['role'] = self.user.role 
+        return data
+
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 

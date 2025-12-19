@@ -1,7 +1,7 @@
 from rest_framework import viewsets, generics, permissions, serializers
 from .models import Member
 # MemberSerializer와 UserCreateSerializer 둘 다 import
-from .serializer import MemberSerializer, UserCreateSerializer, CustomTokenObtainPairSerializer
+from .serializers import MemberSerializer, UserCreateSerializer, CustomTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from drf_spectacular.utils import extend_schema
 
@@ -11,8 +11,6 @@ class MemberViewSet(viewsets.ModelViewSet):
     serializer_class = MemberSerializer # 기본 시리얼라이저
     lookup_field = 'sid'
 
-    # 5. (핵심) 이 함수가 'create' 액션일 때
-    #    UserCreateSerializer를 반환하도록 합니다.
     def get_serializer_class(self):
         if self.action == 'create':
             return UserCreateSerializer
@@ -37,3 +35,4 @@ class RegistrationView(generics.CreateAPIView):
     queryset = Member.objects.all()
     serializer_class = UserCreateSerializer
     permission_classes = [permissions.AllowAny]  # 누구나 회원가입 가능
+
