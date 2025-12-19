@@ -11,11 +11,7 @@ import './RegisterPage.css';
 function Register() {
   const [sid, setSid] = useState('');
   const [name, setName] = useState('');
-  
-  // ★ [추가] 신분(Role) 상태 관리 (기본값: 학부생)
-  // 백엔드 models.py에 정의된 값과 대소문자가 일치해야 합니다.
   const [role, setRole] = useState('UNDERGRADUATE'); 
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -30,27 +26,22 @@ function Register() {
       return; 
     }
 
-    // ★ [추가] 서버로 보낼 데이터에 role 포함
     const userData = { sid, name, email, password, role };
 
     try {
-      // api.js의 registerUser 함수 호출
       const response = await registerUser(userData);
-      
-      console.log('회원가입 성공:', response.data);
-      alert(`${response.data.name}님, 회원가입이 완료되었습니다. 로그인해주세요.`);
-      
-      // 회원가입 성공 시 로그인 페이지로 이동
-      navigate('/login'); 
+      const result = response.data || response;
+      console.log('회원가입 성공 데이터:', result);
+      const successName = result?.name || name; 
+      alert(`${successName}님, 회원가입이 완료되었습니다. 로그인해주세요.`);
+      navigate('/login');
 
     } catch (error) {
       console.error('회원가입 실패:', error.response ? error.response.data : error.message);
       
       if (error.response && error.response.status === 400) {
-        // DRF가 보낸 유효성 검사 에러 처리
         const errorData = error.response.data;
         let errorMessage = '회원가입에 실패했습니다.\n';
-        
         if (errorData.sid) errorMessage += `학번: ${errorData.sid.join(' ')}\n`;
         if (errorData.email) errorMessage += `이메일: ${errorData.email.join(' ')}\n`;
         

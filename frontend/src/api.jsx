@@ -19,7 +19,7 @@ export const registerUser = async (userData) => {
 export const loginUser = async (sid, password) => {
   try {
     const response = await api.post('/api/token/', {
-      username: sid,  // 'sid'를 'username'이라는 이름표로 바꿔서 보냅니다.
+      username: String(sid),  // 'sid'를 'username'이라는 이름표로 바꿔서 보냅니다.
       password: password,
     });
     
