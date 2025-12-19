@@ -9,8 +9,6 @@ class MemberSerializer(serializers.ModelSerializer):
         fields = ['sid', 'name', 'email', 'status', 'join_date', 'role']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    sid = serializers.IntegerField(required=True)
-
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
