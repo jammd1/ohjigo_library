@@ -9,21 +9,16 @@ class MemberSerializer(serializers.ModelSerializer):
         fields = ['sid', 'name', 'email', 'status', 'join_date', 'role']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['sid'] = int(user.sid)
-        token['name'] = user.name
-        token['role'] = user.role 
-        return token
-
     def validate(self, attrs):
-        data = super().validate(attrs)
-        data['sid'] = self.user.sid
-        data['name'] = self.user.name
-        data['email'] = self.user.email
-        data['role'] = self.user.role 
-        return data
+        # 1. 프론트에서 username이라는 이름으로 보낸 값을 가져옵니다.
+        username = attrs.get("username")
+        
+        # 2. 값이 있다면 무조건 '문자열'로 변환해버립니다. (가장 안전)
+        if username:
+            attrs["username"] = str(username)
+            
+        # 3. 나머지는 장고 시스템이 알아서 검증하게 던져줍니다.
+        return super().validate(attrs)
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
