@@ -9,7 +9,7 @@ import api from './api/http';
  */
 export const registerUser = async (userData) => {
   // api 인스턴스에 이미 baseURL이 설정되어 있으므로 경로만 적습니다.
-  const response = await api.post('/members/', userData);
+  const response = await api.post('/api/members/', userData);
   return response.data;
 };
 
