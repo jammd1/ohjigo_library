@@ -18,10 +18,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        # ★ [수정 2] 여기서 role 데이터를 꺼내서 넘겨줘야 합니다!
-        # (만약 role을 선택 안 했으면 None이 되거나 에러가 날 수 있으니 .get 사용 권장)
         user = Member.objects.create_user(
             sid=validated_data['sid'],
+            username=str(validated_data['sid']),
             name=validated_data['name'],
             email=validated_data['email'],
             password=validated_data['password'],

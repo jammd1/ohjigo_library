@@ -73,6 +73,7 @@ class Member(AbstractUser, PermissionsMixin):
     member_last_activity = models.DateTimeField("최종 활동 시각", auto_now=True)
     join_date = models.DateTimeField("최초 회원가입 시각", auto_now_add=True)
     USERNAME_FIELD = sid
+    REQUIRED_FIELDS = ["name", "email"]
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -94,8 +95,6 @@ class Member(AbstractUser, PermissionsMixin):
         related_name="member_user_permissions",  # 역참조 이름 변경
         related_query_name="member",
     )
-
-    username = None  # 학번을 ID로 쓰므로 username 필드 제거
 
     class Meta:
         db_table = "MEMBER"
