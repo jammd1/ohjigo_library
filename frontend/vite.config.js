@@ -5,16 +5,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   
-  base: '/ohjigo_library/',
+  // base: '/ohjigo_library/',  <-- ✅ 이 줄을 삭제하거나 주석 처리하세요!
 
   server: {
     proxy: {
-      // '/api'로 시작하는 모든 요청을 Django 서버로 보냅니다.
       '/api': {
-        target: 'https://ohjigo-library.onrender.com', // Django 서버 주소
-        changeOrigin: true, // CORS 오류 방지를 위해 호스트 헤더 변경
+        target: 'https://ohjigo-library.onrender.com',
+        changeOrigin: true,
       }
     }
   }
-  // ------------------------------------
 })
