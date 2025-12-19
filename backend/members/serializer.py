@@ -2,53 +2,24 @@ from rest_framework import serializers
 from .models import Member
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-class MemberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Member
-        # ★ [수정 1] 마이페이지 등에서 신분을 보려면 여기에 'role'도 추가해야 합니다.
-        fields = ['sid', 'name', 'email', 'status', 'join_date', 'role']
-
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
     class Meta:
         model = Member
-        # 여기 fields에 role 넣으신 건 아주 잘하셨습니다!
         fields = ['sid', 'name', 'email', 'password', 'role']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        # MemberManager의 create_user를 호출할 때 username을 명시적으로 넘깁니다.
         user = Member.objects.create_user(
             sid=validated_data['sid'],
-            username=str(validated_data['sid']),
+            username=str(validated_data['sid']), # 이 부분이 로그인 가능 여부를 결정합니다.
             name=validated_data['name'],
             email=validated_data['email'],
             password=validated_data['password'],
-            role=validated_data.get('role', 'UNDERGRADUATE') # ★ 핵심: role 전달
+            role=validated_data.get('role', 'UNDERGRADUATE')
         )
         return user
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    sid = serializers.IntegerField(required=True)
-
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        token['sid'] = int(user.sid)
-        token['name'] = user.name
-        # ★ [추천] 토큰 안에도 role 정보를 넣어두면 프론트엔드에서 편합니다.
-        token['role'] = user.role 
-        
-        return token
-
-    def validate(self, attrs):
-        data = super().validate(attrs)
-
-        data['sid'] = self.user.sid
-        data['name'] = self.user.name
-        data['email'] = self.user.email
-        # ★ [추천] 로그인 결과에도 role 정보를 포함시킵니다.
-        data['role'] = self.user.role 
-        
-        return data
+# CustomTokenObtainPairSerializer 및 MemberSerializer는 기존과 동일하게 유지

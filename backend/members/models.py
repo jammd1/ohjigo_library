@@ -4,7 +4,6 @@ from django.db import transaction, IntegrityError
 import logging
 from django.utils import timezone
 
-# Member 생성 관리자 클래스
 logger = logging.getLogger(__name__)
 
 class MemberManager(BaseUserManager):
@@ -16,8 +15,12 @@ class MemberManager(BaseUserManager):
         if not email:
             raise ValueError("이메일이 입력되지 않았습니다.")
         
+        # username이 명시적으로 들어오지 않았다면 sid로 설정
+        if 'username' not in extra_fields:
+            extra_fields['username'] = str(sid)
+            
         if not password:
-            password = str(sid)  # SID를 문자열로 변환하여 비밀번호로 설정
+            password = str(sid)
             
         extra_fields.setdefault('member_last_activity', timezone.now())
         
@@ -43,58 +46,29 @@ class MemberManager(BaseUserManager):
     def create_superuser(self, sid, name, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
-
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("슈퍼유저는 is_staff=True 여야 합니다.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("슈퍼유저는 is_superuser=True 여야 합니다.")
+        # 슈퍼유저도 username이 필수이므로 설정
+        extra_fields.setdefault("username", str(sid))
         return self.create_user(sid, name, email, password, **extra_fields)
         
 class Member(AbstractUser, PermissionsMixin):
-    """
-    회원정보 테이블 (MEMBER)
-    """
-    class Status(models.TextChoices):
-        ACTIVE = "ACTIVE", "활성"
-        DORMANT = "DORMANT", "휴면"
-        WITHDRAWN = "WITHDRAWN", "탈퇴"
-        SUSPENDED = "SUSPENDED", "정지"
-
-    class Role(models.TextChoices):
-        PROFESSOR = "PROFESSOR", "교수"
-        GRADUATE = "GRADUATE", "대학원생"
-        UNDERGRADUATE = "UNDERGRADUATE", "학부생/졸업생"
-    
     sid = models.IntegerField("학번", primary_key=True, unique=True)
     name = models.CharField("실명 또는 닉네임", max_length=100)
     email = models.EmailField("이메일", max_length=100, unique=True)
-    status = models.CharField("계정 상태", max_length=20, choices=Status.choices, default=Status.ACTIVE)
-    role = models.CharField("신분", max_length=20, choices=Role.choices, default=Role.UNDERGRADUATE)
-    member_last_activity = models.DateTimeField("최종 활동 시각", auto_now=True)
-    join_date = models.DateTimeField("최초 회원가입 시각", auto_now_add=True)
+    
+    # [추가] DB에 저장될 때 username이 없으면 sid를 복사해서 넣어줌 (Shell 작업 방지)
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = str(self.sid)
+        super().save(*args, **kwargs)
+
     USERNAME_FIELD = "sid"
     REQUIRED_FIELDS = ["name", "email"]
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
-    # ★ [중요] Django 기본 User 모델과의 충돌 방지를 위한 설정
-    groups = models.ManyToManyField(
-        'auth.Group',
-        verbose_name='groups',
-        blank=True,
-        help_text='The groups this user belongs to.',
-        related_name="member_groups",  # 역참조 이름 변경
-        related_query_name="member",
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        verbose_name='user permissions',
-        blank=True,
-        help_text='Specific permissions for this user.',
-        related_name="member_user_permissions",  # 역참조 이름 변경
-        related_query_name="member",
-    )
+    groups = models.ManyToManyField('auth.Group', related_name="member_groups", blank=True)
+    user_permissions = models.ManyToManyField('auth.Permission', related_name="member_user_permissions", blank=True)
 
     class Meta:
         db_table = "MEMBER"
@@ -104,8 +78,5 @@ class Member(AbstractUser, PermissionsMixin):
     
     objects = MemberManager()
 
-    USERNAME_FIELD = "sid"
-    REQUIRED_FIELDS = ["name", "email"]
-
     def __str__(self):
-        return f"[{self.get_role_display()}] {self.name} ({self.sid})"
+        return f"[{self.name}] ({self.sid})"
