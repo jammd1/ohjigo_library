@@ -100,7 +100,24 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-SIMPLE_JWT = { "USER_ID_FIELD": "sid" }
+SIMPLE_JWT = {
+    # ★ [가장 중요] 로그인의 핵심 설정입니다.
+    'TOKEN_OBTAIN_SERIALIZER': 'members.serializers.CustomTokenObtainPairSerializer',
+    
+    # 모델에서 USERNAME_FIELD로 지정한 필드명을 적습니다.
+    'USER_ID_FIELD': 'sid', 
+    'USER_ID_CLAIM': 'user_id',
+
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+AUTH_USER_MODEL = 'members.Member'
 
 LANGUAGE_CODE = "ko-kr" # 한국어 설정
 TIME_ZONE = "Asia/Seoul"
