@@ -24,7 +24,7 @@ function NoticeDetailPage() {
         setError(null);
         setLoading(true);
 
-        const response = await http.get(`/api/notices/${noticeId}/`);
+        const response = await http.get(`notices/${noticeId}/`);
         
         setNotice(response.data);
       } catch (e) {
