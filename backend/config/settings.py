@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "members",
     "library",
     "manager",
+    'import_export',
 ]
 
 MIDDLEWARE = [
