@@ -80,9 +80,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 # Database 설정
-if os.environ.get("DATABASE_URL"):
+db_url = config("DATABASE_URL", default=None)
+
+if db_url:
     DATABASES = {
-        "default": dj_database_url.config(conn_max_age=600, ssl_require=True)
+        "default": dj_database_url.config(
+            default=db_url,
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
 else:
     DATABASES = {
