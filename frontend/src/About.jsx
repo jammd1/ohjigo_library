@@ -32,9 +32,10 @@ function About() {
         <p>2025년 오스트리아 도서관의 디지털화에 쓰인 여러가지 기술들을 소개합니다.</p>
         <br />
 
-        <h2>분야 분류: mBERT 모델을 이용한 subject classifier</h2>
+        <h2>1. 분야 분류기: mBERT 모델을 이용한 subject classifier</h2>
         <br />
-        <a href="https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container">서비스 링크: https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container</a>
+        <h3>서비스 링크</h3>
+        <a href="https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container">https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container</a>
           <br />
         <h3>도입 배경</h3>
         <p>기존에는 도서 목록 구축 과정에서 도서 분야를 사람이 직접 판단하여 수기로 입력해야했습니다.
@@ -90,7 +91,7 @@ function About() {
         
         <br />
         <br />
-        <h2>청구 기호 생성: 텍스트 전처리 및 hashlib 라이브러리를 이용한 고유 문자열 생성기</h2>
+        <h2>2. 청구 기호 생성가: 텍스트 전처리 및 hashlib 라이브러리를 이용한 고유 문자열 생성</h2>
         <br />
         <h3>도입 배경</h3>
         <p>도서 목록 구축 기존 과정에서는 분야와 마찬가지로 청구 기호 또한 사람이 직접 만들어내는 구조로서 긴 소요시간과 더불어 
@@ -111,7 +112,7 @@ function About() {
         <a href="https://drive.google.com/file/d/1htjFnBmoWcSdOwK-XJWu4HcRhK68ZqGH/view?usp=drive_link">https://drive.google.com/file/d/1htjFnBmoWcSdOwK-XJWu4HcRhK68ZqGH/view?usp=drive_link</a></p>
         <br />
         <br />
-        <h2>Tech Stack</h2>
+        <br /><h1>Tech Stack</h1>
         <br />
         <h3>Development</h3>
         <p>Language: Python, JavaScript</p>
