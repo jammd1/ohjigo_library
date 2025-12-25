@@ -10,15 +10,24 @@ class MemberSerializer(serializers.ModelSerializer):
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
-        # 1. 프론트에서 username이라는 이름으로 보낸 값을 가져옵니다.
-        username = attrs.get("username")
+        # 1. 프론트엔드에서 어떤 이름으로 보내든(username 또는 sid) 
+        # 이를 'username' 키에 담아 장고 인증 시스템에 전달해야 합니다.
+        username = attrs.get("username") or attrs.get("sid")
         
-        # 2. 값이 있다면 무조건 '문자열'로 변환해버립니다. (가장 안전)
         if username:
+            # 숫자로 들어오든 문자로 들어오든 일단 문자로 변환
             attrs["username"] = str(username)
             
-        # 3. 나머지는 장고 시스템이 알아서 검증하게 던져줍니다.
-        return super().validate(attrs)
+        # 2. 부모 클래스의 validate를 실행하면 
+        # 장고가 USERNAME_FIELD(즉, sid)와 password를 대조합니다.
+        data = super().validate(attrs)
+
+        # 3. 로그인 성공 시 토큰 외에 사용자 정보를 같이 내려주면 프론트가 편합니다.
+        data['name'] = self.user.name
+        data['sid'] = self.user.sid
+        data['role'] = self.user.role
+        
+        return data
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

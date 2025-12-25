@@ -108,7 +108,6 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # ★ [가장 중요] 로그인의 핵심 설정입니다.
     'TOKEN_OBTAIN_SERIALIZER': 'members.serializers.CustomTokenObtainPairSerializer',
     
     # 모델에서 USERNAME_FIELD로 지정한 필드명을 적습니다.
