@@ -9,24 +9,26 @@ class MemberSerializer(serializers.ModelSerializer):
         fields = ['sid', 'name', 'email', 'status', 'join_date', 'role']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 프론트엔드에서 'sid'로 보내는 경우를 대비해 필드를 동적으로 추가합니다.
+        self.fields['sid'] = serializers.CharField(write_only=True, required=False)
+
     def validate(self, attrs):
-        # 1. 프론트엔드에서 어떤 이름으로 보내든(username 또는 sid) 
-        # 이를 'username' 키에 담아 장고 인증 시스템에 전달해야 합니다.
-        username = attrs.get("username") or attrs.get("sid")
+        # 1. 'username'이 비어있고 'sid'가 들어왔다면 'username'에 채워줍니다.
+        if not attrs.get("username") and attrs.get("sid"):
+            attrs["username"] = str(attrs.get("sid"))
         
-        if username:
-            # 숫자로 들어오든 문자로 들어오든 일단 문자로 변환
-            attrs["username"] = str(username)
-            
-        # 2. 부모 클래스의 validate를 실행하면 
-        # 장고가 USERNAME_FIELD(즉, sid)와 password를 대조합니다.
+        # 2. 혹시 몰라 한 번 더 문자열로 변환 (타입 에러 방지)
+        if attrs.get("username"):
+            attrs["username"] = str(attrs.get("username"))
+
+        # 3. 이제 부모 클래스가 'username'을 가지고 인증을 진행합니다.
         data = super().validate(attrs)
 
-        # 3. 로그인 성공 시 토큰 외에 사용자 정보를 같이 내려주면 프론트가 편합니다.
+        # 로그인 성공 시 추가 정보 반환
         data['name'] = self.user.name
         data['sid'] = self.user.sid
-        data['role'] = self.user.role
-        
         return data
 
 class UserCreateSerializer(serializers.ModelSerializer):
