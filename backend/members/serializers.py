@@ -7,30 +7,18 @@ class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ['sid', 'name', 'email', 'status', 'join_date', 'role']
-        
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    # 1. 프론트엔드에서 보내는 'sid'를 공식적으로 허용합니다. (이게 핵심입니다)
-    sid = serializers.CharField(required=True)
-    # 2. 부모가 기본으로 요구하는 'username'은 잠시 필수 해제합니다.
-    username = serializers.CharField(required=False)
-
+    # 프론트 Payload 확인 결과, 데이터가 'username'으로 오고 있습니다.
+    # 따라서 sid 선언을 지우고 기본 username 로직을 따릅니다.
+    
     def validate(self, attrs):
-        # 3. 프론트에서 준 'sid' 값을 뽑아서 'username' 자리에 넣어줍니다.
-        # SimpleJWT는 내부적으로 'username'이라는 이름의 데이터가 있어야 로그인을 진행합니다.
-        sid_value = attrs.get('sid')
-        if sid_value:
-            attrs['username'] = sid_value
-        
-        # 4. 부모(SimpleJWT)의 원래 검증 로직을 실행합니다.
-        # 여기서 'sid'가 남아있으면 에러가 날 수 있으니 슬쩍 지워줍니다.
-        temp_attrs = attrs.copy()
-        if 'sid' in temp_attrs:
-            del temp_attrs['sid']
-            
-        # 5. 이제 깨끗해진 데이터로 실제 로그인을 시도합니다.
-        data = super().validate(temp_attrs)
+        # 1. 부모 클래스(SimpleJWT)의 기본 검증을 먼저 실행합니다.
+        # SimpleJWT는 기본적으로 'username'과 'password'를 검사합니다.
+        data = super().validate(attrs)
 
-        # 6. 로그인 성공 후 프론트에 돌려줄 데이터
+        # 2. 검증이 성공하면(로그인 성공), 응답에 필요한 정보를 추가합니다.
+        # self.user를 통해 DB에서 추가 정보를 가져옵니다.
         data['name'] = self.user.name
         data['sid'] = self.user.sid
         data['role'] = self.user.role
