@@ -26,18 +26,16 @@ function About() {
         <h2>장은수교수님</h2>
         <p>제 00대 도서관장 (0000-0000)</p>
         <p>장은수 교수님의 한마디</p>
-        <br />
-        <h2>홍구슬 교수님</h2>
-        <p>제 00대 도서관장 (0000-0000)</p>
-        <p>홍구슬 교수님의 한마디</p>
       </div>
-      <br /><h1>기술 접목 현황</h1>
+      <br /><h1>기술 접목: 언어학과 AI</h1>
       <div className="tech-section">
         <p>2025년 오스트리아 도서관의 디지털화에 쓰인 여러가지 기술들을 소개합니다.</p>
         <br />
 
         <h2>분야 분류: mBERT 모델을 이용한 subject classifier</h2>
         <br />
+        <a href="https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container">서비스 링크: https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container</a>
+          <br />
         <h3>도입 배경</h3>
         <p>기존에는 도서 목록 구축 과정에서 도서 분야를 사람이 직접 판단하여 수기로 입력해야했습니다.
           해당 업무 방식은 잦은 오류와 긴 소요시간 등의 문제를 야기했고, 이에 문제를 해결하고자 AI 모델을 학습시켜
@@ -113,13 +111,19 @@ function About() {
         <a href="https://drive.google.com/file/d/1htjFnBmoWcSdOwK-XJWu4HcRhK68ZqGH/view?usp=drive_link">https://drive.google.com/file/d/1htjFnBmoWcSdOwK-XJWu4HcRhK68ZqGH/view?usp=drive_link</a></p>
         <br />
         <br />
-        <h2>Development Languages</h2>
+        <h2>Tech Stack</h2>
         <br />
-        <h3>Frontend</h3>
-        <p>JavaScript</p>
+        <h3>Development</h3>
+        <p>Language: Python, JavaScript</p>
+        <p>Frontend: React, CSS</p>
+        <p>Backend: Django, Django Rest Framework</p>
+        <p>Database: PostgreSQL</p>
         <br />
-        <h3>Backend</h3>
-        <p>Python</p>
+        <h3>Deployment & Infra</h3>
+        <p>Frontend Hosting: Vercel</p>
+        <p>Backend Hosting: Render</p>
+        <p>Database Hosting: Neon DB</p>
+        <p>Monitoring: Uptime Robot</p>
       </div>
     </main>
   );
