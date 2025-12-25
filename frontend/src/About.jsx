@@ -35,7 +35,7 @@ function About() {
         <h2>1. 분야 분류기: mBERT 모델을 이용한 subject classifier</h2>
         <br />
         <h3>서비스 링크</h3>
-        <a href="https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container">https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container</a>
+        <a href="https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service">https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service</a>
           <br />
           <br />
         <h3>도입 배경</h3>
