@@ -20,9 +20,9 @@ function About() {
         </p>
       </div>
       <div className="introduce-section">
-        <h2>학과장님</h2>
+        {/*<h2>학과장님</h2>
         <p>조국현 교수님의 한마디</p>
-        <br />
+        <br />*/}
         <h2>장은수교수님</h2>
         <p>제 00대 도서관장 (0000-0000)</p>
         <p>장은수 교수님의 한마디</p>
