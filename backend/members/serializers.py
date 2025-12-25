@@ -8,17 +8,26 @@ class MemberSerializer(serializers.ModelSerializer):
         model = Member
         fields = ['sid', 'name', 'email', 'status', 'join_date', 'role']
 
+# members/serializers.py
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    # 프론트 Payload 확인 결과, 데이터가 'username'으로 오고 있습니다.
-    # 따라서 sid 선언을 지우고 기본 username 로직을 따릅니다.
-    
+    # 프론트에서 'username'으로 보내는 값을 'sid'로 매핑하기 위해 필드를 정의합니다.
+    username_field = Member.USERNAME_FIELD # 'sid'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 기본적으로 SimpleJWT는 USERNAME_FIELD(sid)를 찾습니다.
+        # 프론트에서 'username'이라는 키로 데이터를 보내고 있으므로, 
+        # 시리얼라이저의 필드 구성을 강제로 username으로 맞춰줍니다.
+        self.fields[self.username_field] = serializers.CharField()
+        if 'username' in self.initial_data:
+            self.initial_data[self.username_field] = self.initial_data.pop('username')[0] if isinstance(self.initial_data.get('username'), list) else self.initial_data.get('username')
+
     def validate(self, attrs):
-        # 1. 부모 클래스(SimpleJWT)의 기본 검증을 먼저 실행합니다.
-        # SimpleJWT는 기본적으로 'username'과 'password'를 검사합니다.
+        # attrs['sid'] 에 값이 정상적으로 들어왔는지 확인하고 검증을 진행합니다.
         data = super().validate(attrs)
 
-        # 2. 검증이 성공하면(로그인 성공), 응답에 필요한 정보를 추가합니다.
-        # self.user를 통해 DB에서 추가 정보를 가져옵니다.
+        # 로그인 성공 후 응답 데이터 추가
         data['name'] = self.user.name
         data['sid'] = self.user.sid
         data['role'] = self.user.role
