@@ -37,11 +37,19 @@ function About() {
         <h3>서비스 링크</h3>
         <a href="https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container">https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service?logs=container</a>
           <br />
+          <br />
         <h3>도입 배경</h3>
         <p>기존에는 도서 목록 구축 과정에서 도서 분야를 사람이 직접 판단하여 수기로 입력해야했습니다.
           해당 업무 방식은 잦은 오류와 긴 소요시간 등의 문제를 야기했고, 이에 문제를 해결하고자 AI 모델을 학습시켜
           도서를 입력하는 사서들의 업무 난이도를 줄이고자 하였습니다.</p>
           <br />
+        <h3>의의</h3>
+          <p>오스트리아 도서관의 디지털화 과정 중 도서 주제 분류에 AI를 활용시킨 해당 사례는 
+          우리 한국외국어대학교가 보유한 방대한 독일어 문헌 자산과 자연어처리(NLP) 기술(mBERT기반 fine-tuning)을 접목시킨 
+          '디지털 인문학(Digital Humanities)'의 실증적 사례입니다. 
+          외국어 데이터를 단순히 보관하는 것을 넘어,
+          한국외국어대학교의 기존 정체성과 새로운 시대의 흐름인 인공지능 기술의 융합입니다.</p>
+        <br />
         <h3>모델 학습</h3>
         <p>Berlin State Library 제공 다국어 도서 공개 데이터셋 28525개를 
           8:1:1 비율로 나눠 각각 training, evaluation, test로 사용하였습니다.
@@ -81,13 +89,7 @@ function About() {
           <br />
 
           <br />
-        <h3>의의</h3>
-          <p>오스트리아 도서관의 디지털화 과정 중 도서 주제 분류에 AI를 활용시킨 해당 사례는 
-          우리 한국외국어대학교가 보유한 방대한 독일어 문헌 자산과 자연어처리(NLP) 기술(mBERT기반 fine-tuning)을 접목시킨 
-          '디지털 인문학(Digital Humanities)'의 실증적 사례입니다. 
-          외국어 데이터를 단순히 보관하는 것을 넘어,
-          한국외국어대학교의 기존 정체성과 새로운 시대의 흐름인 인공지능 기술의 융합입니다.</p>
-        <br />
+        
         
         <br />
         <br />
