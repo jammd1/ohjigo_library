@@ -186,7 +186,7 @@ function Layout() {
           <Link to="/" className="site-title">
             <img src={simbol} alt="오스트리아 도서관 로고" className="logo-image" />
             <p className="austrian-library">
-              Austrian Library<br />Bibliothek der Österreich<br />한국외국어대학교 <strong>오스트리아 도서관</strong>
+              Austrian Library<br />Österreichische Bibliothek<br />한국외국어대학교 <strong>오스트리아 도서관</strong>
             </p>
           </Link>
           <nav className="main-nav" aria-label="Main Navigation">
