@@ -11,7 +11,6 @@ class MemberManager(BaseUserManager):
         if not sid:
             raise ValueError("학번을 입력해주세요.")
         
-        # username이 없으면 sid로 설정 (로그인 핵심)
         if 'username' not in extra_fields:
             extra_fields['username'] = str(sid)
             
@@ -36,7 +35,6 @@ class MemberManager(BaseUserManager):
         return self.create_user(sid, name, email, password, **extra_fields)
 
 class Member(AbstractUser, PermissionsMixin):
-    # --- Role & Status 정의 (이게 있어야 Admin 에러가 안 납니다) ---
     class Status(models.TextChoices):
         ACTIVE = "ACTIVE", "활성"
         DORMANT = "DORMANT", "휴면"
@@ -47,34 +45,28 @@ class Member(AbstractUser, PermissionsMixin):
         PROFESSOR = "PROFESSOR", "교수"
         GRADUATE = "GRADUATE", "대학원생"
         UNDERGRADUATE = "UNDERGRADUATE", "학부생/졸업생"
-    # ---------------------------------------------------------
+
 
     sid = models.IntegerField("학번", primary_key=True, unique=True)
     name = models.CharField("실명 또는 닉네임", max_length=100)
     email = models.EmailField("이메일", max_length=100, unique=True)
-    
-    # 에러가 났던 필드들
     status = models.CharField("계정 상태", max_length=20, choices=Status.choices, default=Status.ACTIVE)
     role = models.CharField("신분", max_length=20, choices=Role.choices, default=Role.UNDERGRADUATE)
     
     member_last_activity = models.DateTimeField(auto_now=True)
     join_date = models.DateTimeField(auto_now_add=True)
 
-    # Django 내부 연동 설정
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     
-    # 로그인용 필드 지정
     USERNAME_FIELD = "sid"
     REQUIRED_FIELDS = ["name", "email"]
 
-    # 가입 시 username 자동 채우기
     def save(self, *args, **kwargs):
         if not self.username:
             self.username = str(self.sid)
         super().save(*args, **kwargs)
 
-    # Group 관련 충돌 방지
     groups = models.ManyToManyField('auth.Group', related_name="member_groups", blank=True)
     user_permissions = models.ManyToManyField('auth.Permission', related_name="member_user_permissions", blank=True)
 

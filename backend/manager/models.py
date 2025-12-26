@@ -1,8 +1,6 @@
 from django.db import models
 from members.models import Member
 from django.utils import timezone
-# Create your models here.
-# 2. MANAGER (관리자 역할)
 class Manager(models.Model):
     """
     관리자 역할 테이블 (MANAGER)

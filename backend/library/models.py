@@ -3,10 +3,10 @@ from django.core.validators import RegexValidator
 from members.models import Member
 from manager.models import Manager
 from django.utils import timezone
-from datetime import timedelta # ★ 날짜 계산을 위해 추가
+from datetime import timedelta 
 
 # -----------------------------------------------------------------------------
-# 3. BOOK (물리적 도서)
+# BOOK (물리적 도서)
 # -----------------------------------------------------------------------------
 class Book(models.Model):
     """
@@ -81,7 +81,7 @@ class Book(models.Model):
         super(Book, self).save(*args, **kwargs)
 
 # -----------------------------------------------------------------------------
-# 4. LOAN (대출 기록 트랜잭션)
+# LOAN (대출 기록 트랜잭션)
 # -----------------------------------------------------------------------------
 class Loan(models.Model):
     """
@@ -92,8 +92,6 @@ class Loan(models.Model):
     book = models.ForeignKey(Book, on_delete=models.PROTECT, verbose_name="대출 도서")
     
     loan_date = models.DateTimeField("대출 시작 시각", auto_now_add=True)
-    
-    # ★ [변경] blank=True 추가: 관리자가 입력 안 해도 save() 함수에서 자동으로 채워주기 위해
     due_date = models.DateTimeField("반납 예정일", blank=True, null=True)
     return_date = models.DateTimeField("실제 반납 완료 시각", null=True, blank=True)
     
@@ -120,39 +118,27 @@ class Loan(models.Model):
     def __str__(self):
         return f"대출 ID {self.loan_id} ({self.member.sid} -> {self.book.title})"
 
-    # ★★★ [핵심 기능] 자동화 로직 추가 ★★★
     def save(self, *args, **kwargs):
-        # 1. 신규 대출인 경우 (ID가 생성되기 전)
         if not self.pk:
-            # (1) 반납일 자동 계산 로직
-            # Member 모델의 Role 상수를 사용합니다.
             if self.member.role == Member.Role.PROFESSOR:
-                # 교수: 3개월 (90일)
                 days = 90
             elif self.member.role == Member.Role.GRADUATE:
-                # 대학원생: 1개월 (30일)
                 days = 30
             else:
-                # 학부생/졸업생/기타: 2주 (14일)
                 days = 14
-            
-            # timezone.now()는 현재 시각
+        
             self.due_date = timezone.now() + timedelta(days=days)
-
-            # (2) 도서 상태를 '대출 중'으로 변경
             self.book.status = Book.Status.ON_LOAN
             self.book.save()
 
-        # 2. 반납일(return_date)이 기록된 경우
         if self.return_date:
-            # 도서 상태를 '대출 가능'으로 복구
             self.book.status = Book.Status.AVAILABLE
             self.book.save()
 
         super().save(*args, **kwargs)
 
 # -----------------------------------------------------------------------------
-# 5. NOTICE (공지사항)
+# NOTICE (공지사항)
 # -----------------------------------------------------------------------------
 class Notice(models.Model):
     notice_id = models.AutoField("공지사항 고유 ID", primary_key=True)

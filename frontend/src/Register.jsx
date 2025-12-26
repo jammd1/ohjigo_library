@@ -1,6 +1,6 @@
 //======================================================================
 //======================================================================
-// 회원가입 (수정됨: 신분 선택 추가)
+// 회원가입 
 //======================================================================
 //======================================================================
 import React, { useState } from 'react';
@@ -60,7 +60,6 @@ function Register() {
         <h2>회원 정보 입력</h2>
         
         <form onSubmit={handleSubmit} className="register-form">
-          {/* 학번 */}
           <div className="form-group">
             <label htmlFor="sid-input">학번</label>
             <input 
@@ -69,7 +68,6 @@ function Register() {
             />
           </div>
 
-          {/* 이름 */}
           <div className="form-group">
             <label htmlFor="name-input">이름 (실명 또는 닉네임)</label>
             <input 
@@ -78,7 +76,6 @@ function Register() {
             />
           </div>
 
-          {/* ★ [추가] 신분 선택 (드롭다운) */}
           <div className="form-group">
             <label htmlFor="role-select">신분</label>
             <select 
@@ -102,7 +99,6 @@ function Register() {
             </select>
           </div>
 
-          {/* 이메일 */}
           <div className="form-group">
             <label htmlFor="email-input">이메일</label>
             <input 
@@ -111,7 +107,6 @@ function Register() {
             />
           </div>
 
-          {/* 비밀번호 */}
           <div className="form-group">
             <label htmlFor="password-input">비밀번호</label>
             <input 
@@ -120,7 +115,6 @@ function Register() {
             />
           </div>
 
-          {/* 비밀번호 확인 */}
           <div className="form-group">
             <label htmlFor="password-confirm-input">비밀번호 확인</label>
             <input 

@@ -37,13 +37,11 @@ function MyPage() {
     fetchMyLoans();
   }, [isLoggedIn, navigate]);
 
-  // 날짜 포맷팅 함수 (YYYY-MM-DD)
   const formatDate = (dateString) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleDateString();
   };
 
-  // 연체 여부 계산 함수
   const checkOverdue = (loan) => {
     if (loan.return_date) return false; 
     if (loan.overdue_days > 0) return true;
@@ -59,16 +57,11 @@ function MyPage() {
       <br /><br />
       <h1>내 서재</h1>
 
-      {/* 회원 정보 섹션 */}
       <div className="info-section">
         <h2>회원 정보</h2>
         <p><strong>이름:</strong> {user?.name}</p>
-        
-        {/* ★ [수정 1] 학번 필드명 변경 (id -> sid) */}
         <p><strong>학번(ID):</strong> {user?.sid}</p> 
       </div>
-
-      {/* 대출 현황 섹션 */}
       <div className="info-section">
         <h2>대출 현황</h2>
         {loading ? (
@@ -89,7 +82,6 @@ function MyPage() {
               <tbody>
                 {loans && loans.length > 0 ? (
                   loans.map((loan, index) => {
-                    // loan 객체 구조에 따라 제목 가져오는 방식 (안전하게 처리)
                     const bookTitle = loan.book_title || loan.book?.title || "도서 정보 없음";
                     const isOverdue = checkOverdue(loan);
 
@@ -102,7 +94,6 @@ function MyPage() {
                         <td>{formatDate(loan.loan_date)}</td>
                         <td>{formatDate(loan.due_date)}</td>
                         
-                        {/* 연체 상태 표시 */}
                         <td style={{ 
                           color: isOverdue ? 'red' : 'green', 
                           fontWeight: 'bold' 
@@ -110,7 +101,6 @@ function MyPage() {
                           {isOverdue ? '연체중' : '정상'}
                         </td>
 
-                         {/* 반납 여부 */}
                         <td>
                           {loan.return_date ? (
                             <span style={{color: '#999'}}>반납완료</span>
