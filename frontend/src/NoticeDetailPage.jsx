@@ -1,6 +1,6 @@
 //======================================================================
 //======================================================================
-// 공지사항 상세 (완료)
+// 공지사항 상세
 //======================================================================
 //======================================================================
 import React, { useState, useEffect } from 'react';
@@ -8,15 +8,11 @@ import http from './api/http';
 import { useParams, Link } from 'react-router-dom';
 
 function NoticeDetailPage() {
-  // 1. URL 파라미터에서 noticeId 값을 가져옵니다. (예: /notice/3 -> noticeId = '3')
   const { noticeId } = useParams();
-  
-  // 2. '단일' 공지사항, 로딩, 에러 상태
   const [notice, setNotice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 3. noticeId가 바뀔 때마다 API를 호출합니다.
   useEffect(() => {
     const fetchNoticeDetail = async () => {
       try {
@@ -34,9 +30,8 @@ function NoticeDetailPage() {
     };
 
     fetchNoticeDetail();
-  }, [noticeId]); // noticeId가 변경될 때마다 이 effect를 다시 실행합니다.
+  }, [noticeId]); 
 
-  // --- 로딩 및 에러 UI ---
   if (loading) {
     return (
       <main className="main-content about-page">
@@ -59,8 +54,6 @@ function NoticeDetailPage() {
     );
   }
 
-  // --- 성공 시 상세 페이지 UI ---
-  // notice가 null이거나 찾을 수 없을 때의 처리
   if (!notice) {
     return (
       <main className="main-content about-page">
@@ -73,17 +66,14 @@ function NoticeDetailPage() {
     );
   }
 
-  // notice 객체를 성공적으로 받아왔을 때
   return (
     <main className="main-content about-page">
       <br /><br />
       
-      {/* 1. 제목 (h1) */}
       <h1>{notice.title}</h1>
 
       <div className="about-section">
         
-        {/* 2. 메타데이터 (작성자, 작성일, 조회수) */}
         <div style={{ 
           fontSize: '0.9rem', 
           color: '#666',
@@ -92,7 +82,6 @@ function NoticeDetailPage() {
           borderBottom: '1px solid #eee' 
         }}>
           <span style={{ marginRight: '12px' }}>
-            {/* 'manager'가 ID로 나올 경우, 이름으로 표시는 백엔드 수정이 필요합니다. */}
             작성자: {notice.manager || 'N/A'}
           </span>
           <span style={{ marginRight: '12px' }}>
@@ -102,23 +91,19 @@ function NoticeDetailPage() {
             조회수: {notice.view_count}
           </span>
         </div>
-        
-        {/* 3. 본문 내용 (content) */}
+
         <div 
           className="notice-content"
           style={{ 
-            minHeight: '200px', // 최소 높이
-            lineHeight: '1.6', // 줄 간격
+            minHeight: '200px', 
+            lineHeight: '1.6', 
             fontSize: '1rem',
-            // [!] Django의 TextField는 '\n' (줄바꿈)을 그대로 저장합니다.
-            // 'whiteSpace: pre-wrap'은 이 \n을 HTML <br> 태그처럼 인식하게 해줍니다.
             whiteSpace: 'pre-wrap' 
           }}
         >
           {notice.content}
         </div>
 
-        {/* 4. 목록으로 돌아가기 버튼 */}
         <div style={{ textAlign: 'center', marginTop: '40px' }}>
           <Link 
             to="/board" 

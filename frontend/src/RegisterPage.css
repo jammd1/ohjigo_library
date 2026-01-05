@@ -28,7 +28,7 @@
 
 .register-submit-button {
   padding: 12px;
-  background-color: #000000; /* 로그인 버튼과 동일한 메인 컬러 */
+  background-color: #000000; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -36,7 +36,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s;
-  margin-top: 10px; /* 버튼 위에 살짝 여백 추가 */
+  margin-top: 10px; 
 }
 
 .register-submit-button:hover {

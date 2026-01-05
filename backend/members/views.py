@@ -1,14 +1,13 @@
 from rest_framework import viewsets, generics, permissions, serializers
 from .models import Member
-# MemberSerializer와 UserCreateSerializer 둘 다 import
 from .serializers import MemberSerializer, UserCreateSerializer, CustomTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from drf_spectacular.utils import extend_schema
 
-# 👇👇👇 [수정] 이 클래스를 통째로 덮어쓰세요. 👇👇👇
+
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
-    serializer_class = MemberSerializer # 기본 시리얼라이저
+    serializer_class = MemberSerializer 
     lookup_field = 'sid'
 
     def get_serializer_class(self):
@@ -16,8 +15,6 @@ class MemberViewSet(viewsets.ModelViewSet):
             return UserCreateSerializer
         return super().get_serializer_class()
 
-
-# Define a simple serializer just for the schema documentation
 class TokenObtainRequestSerializer(serializers.Serializer):
     sid = serializers.IntegerField()
     password = serializers.CharField()
@@ -34,5 +31,5 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class RegistrationView(generics.CreateAPIView):
     queryset = Member.objects.all()
     serializer_class = UserCreateSerializer
-    permission_classes = [permissions.AllowAny]  # 누구나 회원가입 가능
+    permission_classes = [permissions.AllowAny] 
 

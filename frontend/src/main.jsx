@@ -7,7 +7,6 @@ import { AuthProvider } from './AuthContext';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* 👈 2. AuthProvider가 HashRouter를 감싸도록 수정 */}
     <AuthProvider>
       <HashRouter>
         <App />

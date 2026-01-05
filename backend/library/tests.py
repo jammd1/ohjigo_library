@@ -8,7 +8,6 @@ from library.models import Loan
 class BookModelTest(TestCase):
     def setUp(self):
         """Test case setup"""
-        # 1. Create a Member
         self.member = Member.objects.create_user(
             sid=20210001,
             name='Test Member',
@@ -16,13 +15,11 @@ class BookModelTest(TestCase):
             password='password123'
         )
 
-        # 2. Create a Manager
         self.manager = Manager.objects.create(
             manager_sid=self.member,
             manager_type=Manager.ManagerType.LIBRARIAN
         )
 
-        # 3. Create a Book
         self.book = Book.objects.create(
             call_number='TS123.45 .B67 2025',
             title='Test Book Title',
@@ -46,35 +43,27 @@ class BookModelTest(TestCase):
 
     def test_update_modi_date(self):
         """Test the update_modi_date method."""
-        # Initially, modification_date should be None
         self.assertIsNone(self.book.modification_date)
-
-        # Update the book and save it
         self.book.title = "Updated Test Book Title"
         self.book.update_modi_date()
 
-        # Reload the book from the database
         updated_book = Book.objects.get(pk=self.book.pk)
 
-        # Now, modification_date should be set
         self.assertIsNotNone(updated_book.modification_date)
 
 class LoanModelTest(TestCase):
     def setUp(self):
         """Test case setup"""
-        # 1. Create a Member
         self.member = Member.objects.create_user(
             sid=20210002,
             name='Loan Test Member',
             email='loanmember@example.com',
             password='password123'
         )
-        # 2. Create a Manager
         self.manager = Manager.objects.create(
             manager_sid = self.member,
             manager_type = Manager.ManagerType.LIBRARIAN,
         )
-        # create a Book
         self.book = Book.objects.create(
             call_number='TS123.45 .L67 2025',
             title='Loan Test Book Title',
@@ -82,8 +71,6 @@ class LoanModelTest(TestCase):
             status=Book.Status.AVAILABLE,
             registrar_manager=self.manager,
         )
-        # create a Loan
-
         self.loan = Loan.objects.create(
             member=self.member,
             book=self.book,

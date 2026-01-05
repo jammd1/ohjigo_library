@@ -1,6 +1,6 @@
 //======================================================================
 //======================================================================
-// 도서관 소개 (틀 완료, 내용 미완료)
+// 도서관 소개 
 //======================================================================
 //======================================================================
 
@@ -13,36 +13,43 @@ function About() {
       <br /><br /><h1>도서관 소개</h1>
       <div className="about-section">
         <h2>도서관 소개</h2>
-        <p>한국외국어대학교 서양어대학 독일어과 소속 오스트리아도서관 (Austrian Library, Bibliothek der Österreich)은 1982년 오스트리아 대사관으로부터 직접 독일어 서적 수천 권을 기증받으며 그 역사가 시작되었습니다.
+        <p>한국외국어대학교 서양어대학 독일어과 소속 오스트리아도서관 (Austrian Library, Österreichische Bibliothek)은 1982년 오스트리아 대사관으로부터 직접 독일어 서적 수천 권을 기증받으며 그 역사가 시작되었습니다.
           현재는 총 5,000여권 규모 서적으로 이루어진, 국내에 몇 안 되는 <strong>독일어권 어문학 전문 도서관</strong>입니다.
           <br />
           국내에서 쉬이 접할 수 없는 독일어 서적을 비치해놓음으로서 독일어권 문학,어학에 관한 한국외국어대학교 학생 및 교수님들의 학문 연구 증진에 기여하고 있습니다.
         </p>
       </div>
       <div className="introduce-section">
-        <h2>학과장님</h2>
+        {/*<h2>학과장님</h2>
         <p>조국현 교수님의 한마디</p>
-        <br />
+        <br />*/}
         <h2>장은수교수님</h2>
         <p>제 00대 도서관장 (0000-0000)</p>
         <p>장은수 교수님의 한마디</p>
-        <br />
-        <h2>홍구슬 교수님</h2>
-        <p>제 00대 도서관장 (0000-0000)</p>
-        <p>홍구슬 교수님의 한마디</p>
       </div>
-      <br /><h1>기술 접목 현황</h1>
+      <br /><h1>기술 접목: 언어학과 AI</h1>
       <div className="tech-section">
         <p>2025년 오스트리아 도서관의 디지털화에 쓰인 여러가지 기술들을 소개합니다.</p>
         <br />
 
-        <h2>분야 분류: mBERT 모델을 이용한 subject classifier</h2>
+        <h2>1. 분야 분류기: mBERT fine-tuning을 이용한 subject classifier</h2>
         <br />
+        <h3>서비스 링크</h3>
+        <a href="https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service">https://huggingface.co/spaces/jsjang0104/book-genre-classifier-service</a>
+          <br />
+          <br />
         <h3>도입 배경</h3>
         <p>기존에는 도서 목록 구축 과정에서 도서 분야를 사람이 직접 판단하여 수기로 입력해야했습니다.
           해당 업무 방식은 잦은 오류와 긴 소요시간 등의 문제를 야기했고, 이에 문제를 해결하고자 AI 모델을 학습시켜
           도서를 입력하는 사서들의 업무 난이도를 줄이고자 하였습니다.</p>
           <br />
+        <h3>의의</h3>
+          <p>오스트리아 도서관의 디지털화 과정 중 도서 주제 분류에 AI를 활용시킨 해당 사례는 
+          우리 한국외국어대학교가 보유한 방대한 독일어 문헌 자산과 자연어처리(NLP) 기술(mBERT기반 fine-tuning)을 접목시킨 
+          '디지털 인문학(Digital Humanities)'의 실증적 사례입니다. 
+          외국어 데이터를 단순히 보관하는 것을 넘어,
+          한국외국어대학교의 기존 정체성과 새로운 시대의 흐름인 인공지능 기술의 융합입니다.</p>
+        <br />
         <h3>모델 학습</h3>
         <p>Berlin State Library 제공 다국어 도서 공개 데이터셋 28525개를 
           8:1:1 비율로 나눠 각각 training, evaluation, test로 사용하였습니다.
@@ -82,17 +89,11 @@ function About() {
           <br />
 
           <br />
-        <h3>의의</h3>
-          <p>오스트리아 도서관의 디지털화 과정 중 도서 주제 분류에 AI를 활용시킨 해당 사례는 
-          우리 한국외국어대학교가 보유한 방대한 독일어 문헌 자산과 자연어처리(NLP) 기술(mBERT기반 fine-tuning)을 접목시킨 
-          '디지털 인문학(Digital Humanities)'의 실증적 사례입니다. 
-          외국어 데이터를 단순히 보관하는 것을 넘어,
-          한국외국어대학교의 기존 정체성과 새로운 시대의 흐름인 인공지능 기술의 융합입니다.</p>
-        <br />
+        
         
         <br />
         <br />
-        <h2>청구 기호 생성: 텍스트 전처리 및 hashlib 라이브러리를 이용한 고유 문자열 생성기</h2>
+        <h2>2. 청구 기호 생성가: 텍스트 전처리 및 hashlib 라이브러리를 이용한 고유 문자열 생성</h2>
         <br />
         <h3>도입 배경</h3>
         <p>도서 목록 구축 기존 과정에서는 분야와 마찬가지로 청구 기호 또한 사람이 직접 만들어내는 구조로서 긴 소요시간과 더불어 
@@ -113,13 +114,19 @@ function About() {
         <a href="https://drive.google.com/file/d/1htjFnBmoWcSdOwK-XJWu4HcRhK68ZqGH/view?usp=drive_link">https://drive.google.com/file/d/1htjFnBmoWcSdOwK-XJWu4HcRhK68ZqGH/view?usp=drive_link</a></p>
         <br />
         <br />
-        <h2>Development Languages</h2>
+        <br /><h1>Tech Stack</h1>
         <br />
-        <h3>Frontend</h3>
-        <p>JavaScript</p>
+        <h3>Development</h3>
+        <p>Language: Python, JavaScript</p>
+        <p>Frontend: React, CSS</p>
+        <p>Backend: Django, Django Rest Framework</p>
+        <p>Database: PostgreSQL</p>
         <br />
-        <h3>Backend</h3>
-        <p>Python</p>
+        <h3>Deployment & Infra</h3>
+        <p>Frontend Hosting: Vercel</p>
+        <p>Backend Hosting: Render</p>
+        <p>Database Hosting: Neon DB</p>
+        <p>Monitoring: Uptime Robot</p>
       </div>
     </main>
   );
