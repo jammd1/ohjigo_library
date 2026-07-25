@@ -86,6 +86,6 @@ ohjigo_library/
 
 | | Role |
 | --- | --- |
-| **장지수** mBERT classification model & call-number generation logic & Frontend |
+| **장지수** ([@jsjang0104](https://github.com/jsjang0104)) | mBERT classification model & call-number generation logic & Frontend |
 | **박재민** ([@jammd1](https://github.com/jammd1)) | Database design (ERD) & Django backend logic |
-| **양수찬** | mBERT classification model & call-number generation logic  |
+| **양수찬** ([@EricYang544](https://github.com/EricYang544)) | mBERT classification model & call-number generation logic  |
